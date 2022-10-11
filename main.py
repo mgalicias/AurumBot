@@ -25,3 +25,4 @@ if __name__ == '__main__':
     bnb = BinanceConnector()
     #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
     #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
+    pprint(bnb.accountInformation())

@@ -73,6 +73,15 @@ class BinanceConnector:
 
         return self._prices
 
-
+    def accountInformation(self):
+        endpoint = "/fapi/v2/account"
+        data = dict()
+        data['timestamp'] = self._getTimestamp()
+        data['signature'] = self._generateSignature(data)
+        dataAccount = self._makeGET(endpoint,data)
+        accountInformation = dict()
+        for data in dataAccount['assets']:
+            accountInformation[data['asset']] = data
+        return accountInformation
 
 
