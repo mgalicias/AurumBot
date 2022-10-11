@@ -6,23 +6,24 @@ logger = logging.getLogger()
 
 class BinanceConnector:
     def __init__(self) :
-        self.api_key = os.environ['BNB_APIKEY']
-        self.secret_key = os.environ['BNB_SECRETKEY']
-        self.base_url = "https://testnet.binancefuture.com"
-        self.header = {"X-MBX-APIKEY":self.api_key}
+        self._api_key = os.environ['BNB_APIKEY']
+        self._secret_key = os.environ['BNB_SECRETKEY']
+        self._base_url = "https://testnet.binancefuture.com"
+        self._header = {"X-MBX-APIKEY":self._api_key}
+        self._prices = dict()
 
-    def makeGET(self,endpoint,data=None):
-        response = requests.get(self.base_url+endpoint,params=data,headers=self.header)
+    def _makeGET(self,endpoint,data=None):
+        response = requests.get(self._base_url+endpoint,params=data,headers=self._header)
         
-        if response.status_code == 200:
+        try:
             logger.info("Connection established!")
             return response.json()
-        else:
-            logger.error("Cannot establish connection!")
+        except Exception as e :
+            logger.error("Cannot establish connection ",e)
 
     def exchangeInfo(self):
         endpoint = "/fapi/v1/exchangeInfo"
-        exchange_information = self.makeGET(endpoint)
+        exchange_information = self._makeGET(endpoint)
         pairs = dict()
         for asset in exchange_information['symbols']:
             pairs[asset['pair']] = asset
@@ -37,7 +38,7 @@ class BinanceConnector:
 
         endpoint = "/fapi/v1/klines"
 
-        candleData = self.makeGET(endpoint,data)
+        candleData = self._makeGET(endpoint,data)
 
         candles = []
 
@@ -45,4 +46,22 @@ class BinanceConnector:
             candles.append([candle[0],candle[1],candle[2],candle[3],candle[4],candle[5]])
 
         return candles
+    
+    def symbolOrderBooklTicker(self,symbol):
+        endpoint = "/fapi/v1/ticker/bookTicker"
+        data = dict()
+        data['symbol'] = symbol
+        price = self._makeGET(endpoint,data)
+
         
+        if symbol not in self._prices:
+            self._prices[symbol] = {'bid':float(price['bidPrice']),'ask':float(price['askPrice'])}
+        else:
+            self._prices[symbol]['bid'] = float(price['bidPrice'])
+            self._prices[symbol]['ask'] = float(price['askPrice'])
+
+        return self._prices
+
+
+
+

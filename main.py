@@ -23,4 +23,5 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
     logger.info("Starting application")
     bnb = BinanceConnector()
-    pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
+    #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
+    #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
