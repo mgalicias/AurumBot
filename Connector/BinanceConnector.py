@@ -1,6 +1,10 @@
 from email import header
+import hashlib
+import hmac
 import logging
 import os
+from time import time
+from urllib.parse import urlencode
 import requests
 logger = logging.getLogger()
 
@@ -11,6 +15,13 @@ class BinanceConnector:
         self._base_url = "https://testnet.binancefuture.com"
         self._header = {"X-MBX-APIKEY":self._api_key}
         self._prices = dict()
+
+    def _getTimestamp(self):
+        return int(time()*1000)
+
+    def _generateSignature(self,data):
+        data['timestamp'] = self._getTimestamp()
+        return hmac.new(self._secret_key.encode(),urlencode(data).encode(),hashlib.sha256).hexdigest()
 
     def _makeGET(self,endpoint,data=None):
         response = requests.get(self._base_url+endpoint,params=data,headers=self._header)
