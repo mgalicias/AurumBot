@@ -25,4 +25,6 @@ if __name__ == '__main__':
     bnb = BinanceConnector()
     #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
     #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
-    pprint(bnb.accountInformation())
+    #pprint(bnb.accountInformation())
+    #bnb.createOrder("BTCUSDT","BUY","LIMIT","GTC",0.001,19000)
+    #bnb.cancelOrder("BTCUSDT",3235882107)
