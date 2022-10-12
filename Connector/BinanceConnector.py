@@ -23,7 +23,7 @@ class BinanceConnector:
         data['timestamp'] = self._getTimestamp()
         return hmac.new(self._secret_key.encode(),urlencode(data).encode(),hashlib.sha256).hexdigest()
 
-    def _makeGET(self,endpoint=None,data=None):
+    def _makeGET(self,endpoint :str,data=None):
         response = requests.get(self._base_url+endpoint,params=data,headers=self._header)
         
         try:
@@ -32,7 +32,7 @@ class BinanceConnector:
         except Exception as e :
             logger.error("Cannot establish connection ",e)
 
-    def _makePOST(self,endpoint=None,data=None):
+    def _makePOST(self,endpoint :str,data=None):
         response = requests.post(self._base_url+endpoint,params=data,headers=self._header)
         
         try:
@@ -41,7 +41,7 @@ class BinanceConnector:
         except Exception as e :
             logger.error("Cannot establish connection ",e)
 
-    def _makeDELETE(self,endpoint=None,data=None):
+    def _makeDELETE(self,endpoint :str,data=None):
         response = requests.delete(self._base_url+endpoint,params=data,headers=self._header)
         
         try:
@@ -58,7 +58,7 @@ class BinanceConnector:
             pairs[asset['pair']] = asset
         return pairs
 
-    def klineCandlestickData(self,symbol=None,interval="1h"):
+    def klineCandlestickData(self,symbol :str,interval="1h"):
 
         data = dict()
         data['symbol'] = symbol
@@ -76,7 +76,7 @@ class BinanceConnector:
 
         return candles
     
-    def symbolOrderBooklTicker(self,symbol=None):
+    def symbolOrderBooklTicker(self,symbol :str):
         endpoint = "/fapi/v1/ticker/bookTicker"
         data = dict()
         data['symbol'] = symbol
@@ -118,7 +118,7 @@ class BinanceConnector:
         logger.info("Order successfully created: %s STATUS: %s",newOrder['orderId'], newOrder['status'])
         
     
-    def cancelOrder(self, symbol, orderId ):
+    def cancelOrder(self, symbol :str, orderId :int ):
         endpoint = "/fapi/v1/order"
         data = dict()
         data['symbol'] = symbol
@@ -127,5 +127,18 @@ class BinanceConnector:
 
         cancelOrder = self._makeDELETE(endpoint,data)
         logger.info("Order successfully canceled: %s STATUS: %s",cancelOrder['orderId'], cancelOrder['status'])
+
+    def queryOrder(self,symbol :str,orderId :int):
+        endpoint = "/fapi/v1/order"
+        data = dict()
+        data['symbol'] = symbol
+        data['orderId'] = orderId
+        data['signature'] = self._generateSignature(data)
+
+        queryOrder = self._makeGET(endpoint,data)
+        logger.info(queryOrder)
+
+
+
 
 

@@ -26,5 +26,6 @@ if __name__ == '__main__':
     #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
     #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
     #pprint(bnb.accountInformation())
-    #bnb.createOrder("BTCUSDT","BUY","LIMIT","GTC",0.001,19000)
-    #bnb.cancelOrder("BTCUSDT",3235882107)
+    #bnb.createOrder("BTCUSDT","BUY","LIMIT","GTC",0.005,19000)
+    bnb.cancelOrder("BTCUSDT",3236457696)
+    bnb.queryOrder("BTCUSDT",3236457696)
