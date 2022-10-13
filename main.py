@@ -27,5 +27,5 @@ if __name__ == '__main__':
     #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
     #pprint(bnb.accountInformation())
     #bnb.createOrder("BTCUSDT","BUY","LIMIT","GTC",0.005,19000)
-    bnb.cancelOrder("BTCUSDT",3236457696)
-    bnb.queryOrder("BTCUSDT",3236457696)
+    #bnb.cancelOrder("BTCUSDT",3236457696)
+    #bnb.queryOrder("BTCUSDT",3236457696)

@@ -6,6 +6,7 @@ import os
 from time import time
 from urllib.parse import urlencode
 import requests
+import models
 logger = logging.getLogger()
 
 class BinanceConnector:
