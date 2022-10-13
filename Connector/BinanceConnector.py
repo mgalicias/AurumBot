@@ -6,7 +6,7 @@ import os
 from time import time
 from urllib.parse import urlencode
 import requests
-import models
+from models import *
 logger = logging.getLogger()
 
 class BinanceConnector:
@@ -51,13 +51,16 @@ class BinanceConnector:
         except Exception as e :
             logger.error("Cannot establish connection ",e)
 
-    def exchangeInfo(self):
+    def exchangeInfo(self) -> ExchangeInformation:
         endpoint = "/fapi/v1/exchangeInfo"
         exchange_information = self._makeGET(endpoint)
         pairs = dict()
+        """
         for asset in exchange_information['symbols']:
             pairs[asset['pair']] = asset
-        return pairs
+        """
+        accountInformation = ExchangeInformation(exchange_information)
+        return accountInformation
 
     def klineCandlestickData(self,symbol :str,interval="1h"):
 
