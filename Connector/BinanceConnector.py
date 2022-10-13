@@ -31,7 +31,7 @@ class BinanceConnector:
             logger.info("Connection established!")
             return response.json()
         except Exception as e :
-            logger.error("Cannot establish connection ",e)
+            logger.error("Cannot establish connection %s",e)
 
     def _makePOST(self,endpoint :str,data=None):
         response = requests.post(self._base_url+endpoint,params=data,headers=self._header)
@@ -50,6 +50,9 @@ class BinanceConnector:
             return response.json()
         except Exception as e :
             logger.error("Cannot establish connection ",e)
+
+    def makePing(self):
+        return self._makeGET("/fapi/v1/ping")
 
     def exchangeInfo(self) -> ExchangeInformation:
         endpoint = "/fapi/v1/exchangeInfo"
