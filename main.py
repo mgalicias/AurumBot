@@ -2,8 +2,10 @@ from asyncio.log import logger
 import logging
 from pprint import pprint
 
-from Connector.BinanceConnector import BinanceConnector
-from Connector.BitmexConnector import BitmexConnector
+from testingModels.BinanceConnector import BinanceConnector
+
+#from Connector.BinanceConnector import BinanceConnector
+#from Connector.BitmexConnector import BitmexConnector
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -24,11 +26,18 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
     logger.info("Starting application")
     bnb = BinanceConnector()
-    bitmex = BitmexConnector()
 
-    indices = bnb.exchangeInfo()
-    print(type(indices))
-    print(indices['BTCUSDT'])
+    indices = bnb.exchangeInformation()
+    print(indices['BTCUSDT'].pair)
+    print(indices['BTCUSDT'].baseAsset)
+    print(indices['BTCUSDT'].quoteAsset)
+    print(indices['BTCUSDT'].pricePrecision)
+    print(indices['BTCUSDT'].quantityPrecision)
+    print(indices['BTCUSDT'].filters)
+    
+    #bitmex = BitmexConnector()
+
+    
     
 
     #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
