@@ -3,6 +3,7 @@ import logging
 from pprint import pprint
 
 from Connector.BinanceConnector import BinanceConnector
+from Connector.BitmexConnector import BitmexConnector
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -23,10 +24,24 @@ logger.addHandler(file_handler)
 if __name__ == '__main__':
     logger.info("Starting application")
     bnb = BinanceConnector()
+    bitmex = BitmexConnector()
+
+    indices = bnb.exchangeInfo()
+    print(type(indices))
+    print(indices['BTCUSDT'])
+    
+
     #pprint(bnb.klineCandlestickData("BTCUSDT","15m"))
     #pprint(bnb.symbolOrderBooklTicker("BTCUSDT"))
     #pprint(bnb.accountInformation())
     #bnb.createOrder("BTCUSDT","BUY","LIMIT","GTC",0.005,19000)
     #bnb.cancelOrder("BTCUSDT",3236457696)
     #bnb.queryOrder("BTCUSDT",3236457696)
-    logger.info(bnb.makePing())
+    #logger.info(bnb.makePing())
+    #logger.info(bitmex.getIndices())
+    #indices = bitmex.getIndices()
+    #print(type(indices))
+    #pprint(indices)
+    #logger.info(indices.askPrice)
+    #logger.info(indices.lastPrice)
+    #logger.info(indices.lastPrice)

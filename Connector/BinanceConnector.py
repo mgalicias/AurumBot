@@ -4,6 +4,7 @@ import hmac
 import logging
 import os
 from time import time
+from typing import Dict
 from urllib.parse import urlencode
 import requests
 from models import *
@@ -17,36 +18,33 @@ class BinanceConnector:
         self._header = {"X-MBX-APIKEY":self._api_key}
         self._prices = dict()
 
-    def _getTimestamp(self):
+    def _getTimestamp(self) -> int:
         return int(time()*1000)
 
-    def _generateSignature(self,data=None):
+    def _generateSignature(self,data :Dict=None) -> str:
         data['timestamp'] = self._getTimestamp()
         return hmac.new(self._secret_key.encode(),urlencode(data).encode(),hashlib.sha256).hexdigest()
 
-    def _makeGET(self,endpoint :str,data=None):
-        response = requests.get(self._base_url+endpoint,params=data,headers=self._header)
-        
+    def _makeGET(self,endpoint :str,data :Dict=None):
+        endpoint = self._base_url + endpoint
         try:
-            logger.info("Connection established!")
+            response = requests.get(endpoint,params=data,headers=self._header)
             return response.json()
         except Exception as e :
             logger.error("Cannot establish connection %s",e)
 
-    def _makePOST(self,endpoint :str,data=None):
-        response = requests.post(self._base_url+endpoint,params=data,headers=self._header)
-        
+    def _makePOST(self,endpoint :str,data :Dict=None):
+        endpoint = self._base_url + endpoint
         try:
-            logger.info("Connection established!")
+            response = requests.post(endpoint,params=data,headers=self._header)
             return response.json()
         except Exception as e :
             logger.error("Cannot establish connection ",e)
 
-    def _makeDELETE(self,endpoint :str,data=None):
-        response = requests.delete(self._base_url+endpoint,params=data,headers=self._header)
-        
+    def _makeDELETE(self,endpoint :str,data :Dict=None):
+        endpoint = self._base_url + endpoint
         try:
-            logger.info("Connection established!")
+            response = requests.delete(endpoint,params=data,headers=self._header)
             return response.json()
         except Exception as e :
             logger.error("Cannot establish connection ",e)
@@ -54,16 +52,14 @@ class BinanceConnector:
     def makePing(self):
         return self._makeGET("/fapi/v1/ping")
 
-    def exchangeInfo(self) -> ExchangeInformation:
+    def exchangeInfo(self) -> Dict["str",ExchangeInformation]:
         endpoint = "/fapi/v1/exchangeInfo"
-        exchange_information = self._makeGET(endpoint)
-        pairs = dict()
-        """
+        exchange_information = self._makeGET(endpoint,dict())
+        pairs :Dict["str",ExchangeInformation] = dict()
         for asset in exchange_information['symbols']:
-            pairs[asset['pair']] = asset
-        """
-        accountInformation = ExchangeInformation(exchange_information)
-        return accountInformation
+            pairs[asset['pair']] = ExchangeInformation(asset)
+                    
+        return pairs
 
     def klineCandlestickData(self,symbol :str,interval="1h"):
 
@@ -71,7 +67,7 @@ class BinanceConnector:
         data['symbol'] = symbol
         data['interval'] = interval
         data['limit'] = 1000
-
+   
         endpoint = "/fapi/v1/klines"
 
         candleData = self._makeGET(endpoint,data)
