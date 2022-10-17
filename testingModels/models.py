@@ -31,4 +31,3 @@ class KlineCandlestickData:
     def getLow(self): return  self._low
     def getClose(self): return self._close
     def getVolume(self): return  self._volume
-
