@@ -28,12 +28,12 @@ if __name__ == '__main__':
     bnb = BinanceConnector()
 
     indices = bnb.exchangeInformation()
-    print(indices['BTCUSDT'].pair)
-    print(indices['BTCUSDT'].baseAsset)
-    print(indices['BTCUSDT'].quoteAsset)
-    print(indices['BTCUSDT'].pricePrecision)
-    print(indices['BTCUSDT'].quantityPrecision)
-    print(indices['BTCUSDT'].filters)
+    print(indices['BTCUSDT'].getPair())
+    print(indices['BTCUSDT'].getBaseAsset())
+    print(indices['BTCUSDT'].getQuoteAsset())
+    print(indices['BTCUSDT'].getPricePrecision())
+    print(indices['BTCUSDT'].getQuantityPrecision())
+    
     
     #bitmex = BitmexConnector()
 
