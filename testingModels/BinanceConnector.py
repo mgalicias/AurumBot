@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Dict
+from typing import Dict,List
 
 
 from requests import delete, get, post
@@ -52,4 +52,16 @@ class BinanceConnector():
             exchangeInformation[data['pair']] = ExchangeInformation(data)
         
         return exchangeInformation
+    
+    def klineCandlestickData(self,symbol :str, interval :str="1h") -> List[KlineCandlestickData]:
+        data = dict()
+        data['symbol'] = symbol
+        data['interval'] = interval
+        data['limit'] = 1000
+        candleInfo = self._makeGET("/fapi/v1/klines",data)
+        candleData = []
         
+        for candle in candleInfo:
+            candleData.append(KlineCandlestickData(candle))
+        return candleData
+

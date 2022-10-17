@@ -27,12 +27,25 @@ if __name__ == '__main__':
     logger.info("Starting application")
     bnb = BinanceConnector()
 
-    indices = bnb.exchangeInformation()
+    candle = bnb.klineCandlestickData("BTCUSDT")
+    print(type(len(candle)))
+
+    for i in range(0,len(candle),1):
+        
+            print(candle[i].getOpenTime())
+            print(candle[i].getOpen())
+            print(candle[i].getHigh())
+            print(candle[i].getClose())
+            print(candle[i].getLow())
+        
+        
+    
+    """indices = bnb.exchangeInformation()
     print(indices['BTCUSDT'].getPair())
     print(indices['BTCUSDT'].getBaseAsset())
     print(indices['BTCUSDT'].getQuoteAsset())
     print(indices['BTCUSDT'].getPricePrecision())
-    print(indices['BTCUSDT'].getQuantityPrecision())
+    print(indices['BTCUSDT'].getQuantityPrecision())"""
     
     
     #bitmex = BitmexConnector()
