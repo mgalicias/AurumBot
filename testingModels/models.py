@@ -31,3 +31,13 @@ class KlineCandlestickData:
     def getLow(self): return  self._low
     def getClose(self): return self._close
     def getVolume(self): return  self._volume
+
+
+class PriceTicker:
+    def __init__(self,data :Dict):
+        self._symbol = data['symbol']
+        self._price = data['price']
+    
+    def getSymbol(self): return self._symbol
+    def getPrice(self): return self._price
+ 

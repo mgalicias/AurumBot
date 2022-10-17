@@ -17,8 +17,8 @@ class BinanceConnector():
         self._secret_key = os.environ['BNB_SECRETKEY']
         self._header = {'X-MBX-APIKEY':self._api_key}
         
-    def _makeGET(self,endpoint :str,data :Dict):
-        endpoint = self._base_url + endpoint
+    def _makeGET(self,data :Dict):
+        endpoint = self._base_url + data['endpoint']
         
         try:
             response = get(endpoint,params=data,headers=self._header)
@@ -26,8 +26,8 @@ class BinanceConnector():
         except Exception as e:
             logger.error("CRITICAL ERROR :: %s",e)
 
-    def _makePOST(self,endpoint :str,data :Dict):
-        endpoint = self._base_url + data
+    def _makePOST(self,data :Dict):
+        endpoint = self._base_url + data['endpoint']
         
         try:
             response = post(endpoint,params=data,headers=self._header)
@@ -36,7 +36,7 @@ class BinanceConnector():
             logger.error("CRITICAL ERROR :: %s",e)
     
     def _makeDELETE(self,endpoint :str,data :Dict):
-        endpoint = self._base_url + data
+        endpoint = self._base_url + data['endpoint']
         
         try:
             response = delete(endpoint,params=data,headers=self._header)
@@ -45,9 +45,10 @@ class BinanceConnector():
             logger.error("CRITICAL ERROR :: %s",e)
 
     def exchangeInformation(self) -> Dict["str",ExchangeInformation]:
-        endpoint = "/fapi/v1/exchangeInfo"    
-        exchangeData = self._makeGET(endpoint,dict())
+        endpoint = {'endpoint':"/fapi/v1/exchangeInfo"}
+        exchangeData = self._makeGET(endpoint)
         exchangeInformation = dict()
+       
         for data in exchangeData['symbols']:
             exchangeInformation[data['pair']] = ExchangeInformation(data)
         
@@ -58,10 +59,30 @@ class BinanceConnector():
         data['symbol'] = symbol
         data['interval'] = interval
         data['limit'] = 1000
-        candleInfo = self._makeGET("/fapi/v1/klines",data)
+        data['endpoint'] = "/fapi/v1/klines"
+        candleInfo = self._makeGET(data)
         candleData = []
         
         for candle in candleInfo:
             candleData.append(KlineCandlestickData(candle))
         return candleData
+
+    def priceTicker(self,symbol :str=None) -> Dict[str,PriceTicker]:
+        
+        data = dict()
+        data['endpoint'] = "/fapi/v1/ticker/price"
+        data['symbol'] = symbol
+
+        priceData = self._makeGET(data)
+
+        prices = PriceTicker(priceData)
+        
+
+        return prices
+
+
+
+
+
+
 
