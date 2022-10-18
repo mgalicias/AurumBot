@@ -44,7 +44,7 @@ class BinanceConnector():
         except Exception as e:
             logger.error("CRITICAL ERROR :: %s",e)
 
-    def exchangeInformation(self) -> Dict["str",ExchangeInformation]:
+    def exchangeInformation(self) -> Dict[str,ExchangeInformation]:
         endpoint = {'endpoint':"/fapi/v1/exchangeInfo"}
         exchangeData = self._makeGET(endpoint)
         exchangeInformation = dict()
@@ -80,8 +80,16 @@ class BinanceConnector():
 
         return prices
 
+    def bookTicker(self,symbol :str) -> Dict[str,BookTicker]:
+        data = dict()
+        data['endpoint'] =  "/fapi/v1/ticker/bookTicker"
+        data['symbol'] = symbol
 
+        contract = self._makeGET(data)
+        logger.info(contract)
+        return BookTicker(contract)
 
+        
 
 
 

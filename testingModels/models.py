@@ -41,3 +41,13 @@ class PriceTicker:
     def getSymbol(self): return self._symbol
     def getPrice(self): return self._price
  
+
+class BookTicker:
+    def __init__(self,data):
+        self._symbol = data['symbol']
+        self._bidPrice = data['bidPrice']
+        self._askPrice = data['askPrice']
+    def getSymbol(self): return self._symbol
+    def getBidPrice(self): return self._bidPrice
+    def getAskPrice(self): return self._askPrice
+    

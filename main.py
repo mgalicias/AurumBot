@@ -4,6 +4,7 @@ from pprint import pprint
 
 from testingModels.BinanceConnector import BinanceConnector
 
+
 #from Connector.BinanceConnector import BinanceConnector
 #from Connector.BitmexConnector import BitmexConnector
 
@@ -32,17 +33,9 @@ if __name__ == '__main__':
     print(pair.getSymbol())
 
 
-    candle = bnb.klineCandlestickData("BTCUSDT")
-    
+    #candle = bnb.klineCandlestickData("BTCUSDT")
+    #print(candle)    
 
-    for i in range(0,len(candle),1):
-        
-            print(candle[i].getOpenTime())
-            print(candle[i].getOpen())
-            print(candle[i].getHigh())
-            print(candle[i].getClose())
-            print(candle[i].getLow())
-        
     indices = bnb.exchangeInformation()
     print(indices['BTCUSDT'].getPair())
     print(indices['BTCUSDT'].getBaseAsset())
@@ -50,7 +43,11 @@ if __name__ == '__main__':
     print(indices['BTCUSDT'].getPricePrecision())
     print(indices['BTCUSDT'].getQuantityPrecision())
 
-    
+    book = bnb.bookTicker("BTCUSDT")
+    print(book.getSymbol())
+    print(book.getBidPrice())
+    print(book.getAskPrice())
+
     #bitmex = BitmexConnector()
 
     
